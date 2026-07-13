@@ -5,8 +5,8 @@ use std::{
     process::Command,
 };
 
-const SOCKET: &str = "/tmp/wallpaper-controller.sock";
-const STATE_FILE: &str = "/tmp/wallpaper-switcher.state";
+const SOCKET: &str = "/tmp/hywal.sock";
+const STATE_FILE: &str = "/tmp/hywal.state";
 
 fn wallpaper_running() -> bool {
     Command::new("pgrep")

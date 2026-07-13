@@ -4,7 +4,7 @@ use std::{
     os::unix::net::UnixStream,
 };
 
-const SOCKET: &str = "/tmp/wallpaper-controller.sock";
+const SOCKET: &str = "/tmp/hywal.sock";
 
 fn main() -> std::io::Result<()> {
     let command = env::args()

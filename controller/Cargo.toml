@@ -1,14 +1,14 @@
 [package]
-name = "wallpaper-controller"
+name = "hywal"
 version = "0.1.0"
 edition = "2024"
 
 [[bin]]
-name = "wallpaperd"
+name = "hywald"
 path = "src/daemon.rs"
 
 [[bin]]
-name = "wallpaperctl"
+name = "hywalctl"
 path = "src/client.rs"
 
 [dependencies]

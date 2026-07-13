@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "wallpaper-controller"
+name = "hywal"
 version = "0.1.0"
