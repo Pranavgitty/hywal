@@ -33,10 +33,13 @@ Singleton {
         console.log("Applying wallpaper:", path)
 
         applyWallpaperProcess.exec([
-            "caelestia",
-            "wallpaper",
-            "-f",
-            path
+            "awww",
+            "img",
+            path,
+            "--transition-type", "grow",
+            "--transition-duration", "0.8",
+            "--transition-fps", "144",
+            "--transition-bezier", ".54,0,.34,.99"
         ])
     }
 
