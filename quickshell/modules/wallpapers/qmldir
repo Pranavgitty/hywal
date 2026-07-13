@@ -1,0 +1,6 @@
+module Wallpapers
+
+singleton WallpaperService 1.0 WallpaperService.qml
+
+WallpaperCard 1.0 WallpaperCard.qml
+WallpaperGrid 1.0 WallpaperGrid.qml
