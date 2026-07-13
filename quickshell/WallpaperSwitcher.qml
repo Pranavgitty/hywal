@@ -25,12 +25,13 @@ PanelWindow {
 	    onFileChanged: reload()
 	
 	    onLoaded: {
-	        const state = text().trim()
-	
-	        console.log("State:", state)
-	
-	        root.visible = (state === "show")
-	    }
+            const state = text().trim()
+
+            root.visible = (state === "show")
+
+            console.log("State:", state)
+            console.log("Visible:", root.visible)
+        }
 	}
 	
     visible: true

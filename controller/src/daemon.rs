@@ -10,7 +10,7 @@ const STATE_FILE: &str = "/tmp/hywal.state";
 
 fn wallpaper_running() -> bool {
     Command::new("pgrep")
-        .args(["-f", "qs -c wallpaper-switcher"])
+        .args(["-f", "qs -c hywal"])
         .output()
         .map(|o| o.status.success())
         .unwrap_or(false)
@@ -20,7 +20,7 @@ fn start_wallpaper_switcher() {
     println!("Starting wallpaper switcher...");
 
     if let Err(err) = Command::new("qs")
-        .args(["-c", "wallpaper-switcher", "-n", "-d"])
+        .args(["-c", "hywal", "-n", "-d"])
         .spawn()
     {
         eprintln!("Failed to start wallpaper switcher: {err}");

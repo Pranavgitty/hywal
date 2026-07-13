@@ -1,5 +1,5 @@
 pragma ComponentBehavior: Bound
-
+import Quickshell
 import QtQuick
 import QtQuick.Controls
 
@@ -32,7 +32,16 @@ Flickable {
                 wallpaperPath: path
 
                 onClicked: {
+                    console.log("Wallpaper clicked")
+
                     WallpaperService.applyWallpaper(path)
+
+                    console.log("Sending hide")
+
+                    Quickshell.execDetached([
+                        "hywalctl",
+                        "hide"
+                    ])
                 }
             }
         }

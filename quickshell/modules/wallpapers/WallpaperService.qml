@@ -23,7 +23,7 @@ Singleton {
         console.log("Reloading wallpapers...")
 
         scanWallpapers.exec([
-            home + "/.config/quickshell/wallpaper-switcher/modules/wallpapers/WallpaperScanner.sh"
+            home + "/.local/share/hywal/wallpaper-scanner.sh"
         ])
     }
 
