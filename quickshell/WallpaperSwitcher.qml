@@ -13,7 +13,7 @@ import "modules/wallpapers" as Wallpapers
 PanelWindow {
     id: root
 
-	property string stateFile: "/tmp/wallpaper-switcher.state"
+	property string stateFile: "/tmp/hywal.state"
 	
 	FileView {
 	    id: stateWatcher
@@ -116,7 +116,7 @@ Shortcut {
 
     onActivated: {
         Quickshell.execDetached([
-            "wallpaperctl",
+            "hywalctl",
             "hide"
         ])
     }
