@@ -4,3 +4,8 @@ singleton WallpaperService 1.0 WallpaperService.qml
 
 WallpaperCard 1.0 WallpaperCard.qml
 WallpaperGrid 1.0 WallpaperGrid.qml
+WallpaperGridView 1.0 WallpaperGridView.qml
+WallpaperModel 1.0 WallpaperModel.qml
+Toolbar 1.0 Toolbar.qml
+ToolbarButton 1.0 ToolbarButton.qml
+SearchBar 1.0 SearchBar.qml
