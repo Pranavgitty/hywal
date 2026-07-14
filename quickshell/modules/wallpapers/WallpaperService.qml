@@ -32,6 +32,7 @@ Singleton {
 
         console.log("Applying wallpaper:", path)
 
+        // Change wallpaper
         applyWallpaperProcess.exec([
             "awww",
             "img",
@@ -40,6 +41,15 @@ Singleton {
             "--transition-duration", "0.8",
             "--transition-fps", "144",
             "--transition-bezier", ".54,0,.34,.99"
+        ])
+
+        // Generate Material You colors
+        matugenProcess.exec([
+            "matugen",
+            "image",
+            path,
+            "--source-color-index",
+            "0"
         ])
     }
 
@@ -74,6 +84,24 @@ Singleton {
 
     Process {
         id: applyWallpaperProcess
+
+        stdout: StdioCollector {
+            onStreamFinished: {
+                if (text.trim().length)
+                    console.log(text)
+            }
+        }
+
+        stderr: StdioCollector {
+            onStreamFinished: {
+                if (text.trim().length)
+                    console.log(text)
+            }
+        }
+    }
+
+    Process {
+        id: matugenProcess
 
         stdout: StdioCollector {
             onStreamFinished: {
