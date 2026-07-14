@@ -62,7 +62,7 @@ PanelWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: "#B0121212"
+        color: Colors.md3.scrim.replace("#", "#b0")
 
         Rectangle {
             id: panel
@@ -73,10 +73,10 @@ PanelWindow {
             anchors.centerIn: parent
 
             radius: 28
-            color: "#CC1A1A1A"
+            color: Colors.md3.surface_container_high
 
             border.width: 1
-            border.color: "#44FFFFFF"
+            border.color: Colors.md3.outline_variant.replace("#", "#44")
 
             ColumnLayout {
                 anchors.fill: parent
@@ -87,7 +87,7 @@ PanelWindow {
                 Text {
                     text: "Wallpaper Switcher"
 
-                    color: "white"
+                    color: Colors.md3.on_surface
 
                     font.pixelSize: 34
                     font.bold: true
@@ -98,10 +98,10 @@ PanelWindow {
                     Layout.fillHeight: true
 
                     radius: 20
-                    color: "#22181818"
+                    color: Colors.md3.surface_container_low
 
                     border.width: 1
-                    border.color: "#33FFFFFF"
+                    border.color: Colors.md3.outline_variant.replace("#", "#33")
 
                     Wallpapers.WallpaperGrid {
                         anchors.fill: parent

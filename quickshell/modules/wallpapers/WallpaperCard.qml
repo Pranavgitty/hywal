@@ -2,6 +2,8 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 
+import "../.."
+
 Rectangle {
     id: root
 
@@ -16,10 +18,10 @@ Rectangle {
 
     clip: true
 
-    color: "#252525"
+    color: Colors.md3.surface_container
 
     border.width: 1
-    border.color: "#33FFFFFF"
+    border.color: Colors.md3.outline_variant.replace("#", "#33")
 
     Image {
         anchors.fill: parent
@@ -40,12 +42,12 @@ Rectangle {
         gradient: Gradient {
             GradientStop {
                 position: 0.0
-                color: "#00000000"
+                color: Colors.md3.scrim.replace("#", "#00")
             }
 
             GradientStop {
                 position: 1.0
-                color: "#AA000000"
+                color: Colors.md3.scrim.replace("#", "#aa")
             }
         }
     }
@@ -63,7 +65,7 @@ Rectangle {
 
         text: wallpaperPath.split("/").pop()
 
-        color: "white"
+        color: Colors.md3.on_surface
 
         elide: Text.ElideRight
 
