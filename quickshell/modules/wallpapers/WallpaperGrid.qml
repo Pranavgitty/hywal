@@ -1,49 +1,159 @@
 pragma ComponentBehavior: Bound
+
 import Quickshell
 import QtQuick
-import QtQuick.Controls
 
 import "."
 
-Flickable {
+Item {
     id: root
 
-    clip: true
-    boundsBehavior: Flickable.StopAtBounds
+    required property var wallpaperModel
+    property int selectedIndex: 0
+    property string selectedPath: ""
+    property bool active: true
+    readonly property int count: wallpaperModel.count
+    property real pixelWheelRemainder: 0
 
-    contentWidth: width
-    contentHeight: grid.implicitHeight
+    function clampIndex(index) {
+        return Math.max(0, Math.min(count - 1, index))
+    }
 
-    Grid {
-        id: grid
+    function select(index, animated) {
+        if (count === 0)
+            return
 
-        width: root.width
+        selectedIndex = clampIndex(index)
+        selectedPath = wallpaperModel.pathAt(selectedIndex)
+        const target = Math.max(0, Math.min(viewport.contentWidth - viewport.width,
+                                             selectedIndex * viewport.step))
+        if (animated) {
+            snapAnimation.to = target
+            snapAnimation.restart()
+        } else {
+            viewport.contentX = target
+        }
+    }
 
-        spacing: 16
+    function selectRelative(delta) {
+        select(selectedIndex + delta, true)
+    }
 
-        columns: Math.max(1, Math.floor(width / 236))
+    function selectPath(path) {
+        const index = wallpaperModel.indexOf(path)
+        if (index >= 0)
+            select(index, false)
+    }
+
+    function applySelection() {
+        if (selectedPath) {
+            WallpaperService.applyWallpaper(selectedPath)
+            Quickshell.execDetached(["hywalctl", "hide"])
+        }
+    }
+
+    function scrollByWheel(angleDelta, pixelDelta) {
+        const angle = angleDelta.y !== 0 ? angleDelta.y : angleDelta.x
+        if (angle !== 0) {
+            // Qt reports a conventional wheel notch as 120 angle units.
+            const steps = Math.max(1, Math.floor(Math.abs(angle) / 120))
+            selectRelative(angle > 0 ? -steps : steps)
+            pixelWheelRemainder = 0
+            return
+        }
+
+        const pixel = pixelDelta.y !== 0 ? pixelDelta.y : pixelDelta.x
+        if (pixel === 0)
+            return
+
+        // High-resolution trackpads emit several small pixel deltas for one
+        // gesture. Accumulate them into the same single-card movement used by
+        // a wheel notch instead of skipping cards per input update.
+        if (pixelWheelRemainder !== 0 && Math.sign(pixelWheelRemainder) !== Math.sign(pixel))
+            pixelWheelRemainder = 0
+        pixelWheelRemainder += pixel
+
+        const steps = Math.floor(Math.abs(pixelWheelRemainder) / 40)
+        if (steps > 0) {
+            selectRelative(pixelWheelRemainder > 0 ? -steps : steps)
+            pixelWheelRemainder -= Math.sign(pixelWheelRemainder) * steps * 40
+        }
+    }
+
+    onSelectedPathChanged: {
+        const index = wallpaperModel.indexOf(selectedPath)
+        if (index >= 0 && index !== selectedIndex)
+            select(index, false)
+    }
+
+    Flickable {
+        id: viewport
+        anchors.fill: parent
+        anchors.leftMargin: -130
+        anchors.rightMargin: -130
+        clip: false
+        interactive: root.active && root.count > 1
+        boundsBehavior: Flickable.StopAtBounds
+        flickDeceleration: 2600
+        maximumFlickVelocity: 4200
+
+        readonly property real cardWidth: 430
+        readonly property real step: Math.max(188, cardWidth * 0.52)
+        readonly property real visualIndex: contentX / step
+
+        contentWidth: Math.max(width, width + Math.max(0, root.count - 1) * step)
+        contentHeight: height
+
+        onMovementEnded: root.select(Math.round(visualIndex), true)
+        onWidthChanged: root.select(root.selectedIndex, false)
 
         Repeater {
-            model: WallpaperService.wallpapers
-
+            model: root.wallpaperModel.model
             delegate: WallpaperCard {
                 required property string path
+                required property string thumbnail
+                readonly property int filteredIndex: root.wallpaperModel.indexOf(path)
 
+                visible: filteredIndex >= 0
+                x: (viewport.width - width) / 2 + filteredIndex * viewport.step
+                y: (viewport.height - height) / 2 - Math.max(0, 1 - Math.abs(carouselOffset) / 2.7) * 16
                 wallpaperPath: path
+                thumbnailPath: thumbnail
+                carouselOffset: filteredIndex - viewport.visualIndex
 
-                onClicked: {
-                    console.log("Wallpaper clicked")
-
-                    WallpaperService.applyWallpaper(path)
-
-                    console.log("Sending hide")
-
-                    Quickshell.execDetached([
-                        "hywalctl",
-                        "hide"
-                    ])
+                onClicked: function(wallpaper) {
+                    root.select(filteredIndex, true)
+                    root.applySelection()
                 }
             }
+        }
+    }
+
+    // Parent-level handling covers the full carousel, including the spaces
+    // between cards, and consumes the event before it can become page scroll.
+    WheelHandler {
+        target: null
+        enabled: root.active && root.count > 1
+        onWheel: event => {
+            root.scrollByWheel(event.angleDelta, event.pixelDelta)
+            event.accepted = true
+        }
+    }
+
+    NumberAnimation {
+        id: snapAnimation
+        target: viewport
+        property: "contentX"
+        duration: 460
+        easing.type: Easing.OutBack
+        easing.overshoot: 0.55
+    }
+
+    Connections {
+        target: root.wallpaperModel
+        function onFilteredChanged() {
+            const current = root.wallpaperModel.indexOf(root.selectedPath)
+            root.select(current >= 0 ? current : 0, false)
         }
     }
 }

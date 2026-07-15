@@ -60,15 +60,19 @@ Singleton {
             id: collector
 
             onStreamFinished: {
-                const files = collector.text
+                const wallpapers = collector.text
                     .split("\n")
                     .map(line => line.trim())
                     .filter(line => line.length > 0)
 
                 wallpapersModel.clear()
 
-                for (const file of files)
-                    wallpapersModel.append({ path: file })
+                for (const entry of wallpapers) {
+                    const separator = entry.indexOf("\t")
+                    const path = separator >= 0 ? entry.slice(0, separator) : entry
+                    const thumbnail = separator >= 0 ? entry.slice(separator + 1) : path
+                    wallpapersModel.append({ path: path, thumbnail: thumbnail })
+                }
 
                 console.log("Loaded", wallpapersModel.count, "wallpapers")
             }
