@@ -8,6 +8,7 @@ Rectangle {
     id: root
 
     required property string wallpaperPath
+    property string thumbnailPath: wallpaperPath
     property real carouselOffset: 0
     property bool gridMode: false
     property bool selected: false
@@ -48,7 +49,9 @@ Rectangle {
 
     Image {
         anchors.fill: parent
-        source: "file://" + root.wallpaperPath
+        // Passing the local path directly lets Qt create a correctly escaped
+        // file URL for wallpaper names containing spaces or other characters.
+        source: root.thumbnailPath
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
         cache: true
@@ -58,6 +61,7 @@ Rectangle {
 
     Rectangle {
         anchors.fill: parent
+        radius: root.radius
         color: Colors.md3.scrim.replace("#", "#")
         opacity: root.gridMode ? (root.isHovered ? 0.02 : 0.08) : 0.07 + root.distance * 0.15 - (root.isHovered ? 0.05 : 0)
         Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
@@ -78,6 +82,7 @@ Rectangle {
             bottom: parent.bottom
         }
         height: 78
+        radius: root.radius
         gradient: Gradient {
             GradientStop { position: 0; color: Colors.md3.scrim.replace("#", "#00") }
             GradientStop { position: 1; color: Colors.md3.scrim.replace("#", "#bb") }

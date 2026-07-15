@@ -53,28 +53,14 @@ PanelWindow {
     color: "transparent"
     anchors { top: true; bottom: true; left: true; right: true }
 
-    Rectangle {
+    Item {
         anchors.fill: parent
-        color: Colors.md3.scrim.replace("#", "#b8")
 
-        Rectangle {
-            id: stageShadow
-            width: stage.width; height: stage.height
-            anchors.centerIn: stage
-            anchors.verticalCenterOffset: 18
-            radius: stage.radius + 8
-            color: Colors.md3.shadow.replace("#", "#66")
-        }
-
-        Rectangle {
+        Item {
             id: stage
             width: Math.min(parent.width * 0.94, 1680)
             height: Math.min(parent.height * 0.82, 760)
             anchors.centerIn: parent
-            radius: 36
-            color: Colors.md3.surface_container_low.replace("#", "#d9")
-            border.width: 1
-            border.color: Colors.md3.outline_variant.replace("#", "#66")
             opacity: root.visible ? 1 : 0
             scale: root.visible ? 1 : 0.97
             Behavior on opacity { NumberAnimation { duration: 260; easing.type: Easing.OutCubic } }

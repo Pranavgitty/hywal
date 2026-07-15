@@ -68,6 +68,7 @@ Item {
             model: root.wallpaperModel.model
             delegate: WallpaperCard {
                 required property string path
+                required property string thumbnail
                 readonly property int filteredIndex: root.wallpaperModel.indexOf(path)
 
                 visible: filteredIndex >= 0
@@ -78,6 +79,7 @@ Item {
                 gridMode: true
                 selected: root.selectedPath === path
                 wallpaperPath: path
+                thumbnailPath: thumbnail
                 carouselOffset: 0
 
                 onClicked: root.selectIndex(filteredIndex)
