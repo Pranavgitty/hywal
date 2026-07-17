@@ -10,7 +10,8 @@ QS_DIR="$HOME/.config/quickshell/hywal"
 MATUGEN_DIR="$HOME/.config/matugen"
 MATUGEN_TEMPLATE_DIR="$MATUGEN_DIR/templates"
 MATUGEN_CONFIG="$MATUGEN_DIR/config.toml"
-CAELESTIA_DIR="$HOME/.config/quickshell/caelestia"
+CAELESTIA_DIR="$HOME/.config/caelestia"
+CAELESTIA_LEGACY_DIR="$HOME/.config/quickshell/caelestia"
 CAELESTIA_STATE_DIR="$HOME/.local/state/caelestia"
 
 echo "==> Building HyWal..."
@@ -51,7 +52,7 @@ MATUGEN_TEMPLATES=$(printf '%s\n' \
     'input_path = "~/.config/matugen/templates/hywal-quickshell.json"' \
     'output_path = "~/.local/state/quickshell/generated/colors.json"')
 
-if [[ -d "$CAELESTIA_DIR" ]]; then
+if [[ -d "$CAELESTIA_DIR" || -d "$CAELESTIA_LEGACY_DIR" ]]; then
     install -Dm755 \
         "$ROOT/scripts/apply-caelestia-theme.py" \
         "$BIN_DIR/hywal-apply-caelestia-theme"
