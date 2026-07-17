@@ -16,7 +16,7 @@ Fast, daemon-powered wallpaper switcher for Hyprland built with Quickshell and R
 
 ## Screenshots
 
-[Grid View Feature](assets/GridView.png)
+![Grid View Feature](assets/GridView.png)
 **Grid View Feature**
 ![Scroll View Feature](assets/ScrollView.png)
 **Scroll View Feature**
