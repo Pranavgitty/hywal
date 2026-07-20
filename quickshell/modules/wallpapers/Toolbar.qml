@@ -32,7 +32,7 @@ Rectangle {
         spacing: 6
 
         ToolbarButton {
-            icon: root.gridMode ? "view-stream" : "grid-view"
+            icon: root.gridMode ? "list" : "grid"
             tooltip: root.gridMode ? "Switch to cover flow" : "Switch to grid"
             checked: root.gridMode
             onClicked: root.gridToggled()
@@ -49,6 +49,6 @@ Rectangle {
 
         SearchBar { id: search }
 
-        ToolbarButton { icon: "more-vert"; tooltip: "More options" }
+        ToolbarButton { icon: "more"; tooltip: "More options" }
     }
 }
