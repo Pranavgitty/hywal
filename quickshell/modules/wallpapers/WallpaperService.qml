@@ -20,26 +20,31 @@ Singleton {
 
     property string currentWallpaper: ""
 
-    // Watch for reload signal from daemon
-    FileView {
-        path: stateDirectory + "/reload"
-        watchChanges: true
-        onFileChanged: {
-            reload()
-        }
-        onLoaded: {}
-    }
-
     ListModel {
         id: wallpapersModel
     }
 
+    // Watch for reload signal from daemon
+    FileView {
+        id: reloadWatcher
+        path: root.stateDirectory + "/reload"
+        watchChanges: true
+        onFileChanged: {
+            reload()
+        }
+    }
+
+    // Config file viewer (load once at startup)
+    FileView {
+        id: configFile
+        path: configDir + "/config.json"
+        watchChanges: false
+    }
+
     function loadConfig() {
-        var configPath = configDir + "/config.json";
-        var file = FileView { path: configPath; }
-        if (file.exists) {
+        if (configFile.exists) {
             try {
-                var text = file.text();
+                var text = configFile.text();
                 return JSON.parse(text);
             } catch (e) {
                 console.log("Failed to parse config:", e);
@@ -49,10 +54,8 @@ Singleton {
     }
 
     function saveConfig(config) {
-        var configPath = configDir + "/config.json";
-        var file = FileView { path: configPath; }
         try {
-            file.write(JSON.stringify(config, null, 2));
+            configFile.write(JSON.stringify(config, null, 2));
         } catch (e) {
             console.log("Failed to save config:", e);
         }

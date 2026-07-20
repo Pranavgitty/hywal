@@ -20,6 +20,7 @@ rm -f /tmp/hywal.state
 
 # Clean up Matugen config - remove HyWal integration section
 MATUGEN_CONFIG="${HOME}/.config/matugen/config.toml"
+MATUGEN_DIR="$(dirname "$MATUGEN_CONFIG")"
 if [[ -f "$MATUGEN_CONFIG" ]]; then
     MATUGEN_CONFIG_TMP=$(mktemp "$MATUGEN_DIR/config.toml.XXXXXX")
     awk '
