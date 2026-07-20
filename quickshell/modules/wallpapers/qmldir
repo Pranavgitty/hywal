@@ -9,3 +9,4 @@ WallpaperModel 1.0 WallpaperModel.qml
 Toolbar 1.0 Toolbar.qml
 ToolbarButton 1.0 ToolbarButton.qml
 SearchBar 1.0 SearchBar.qml
+Icon 1.0 Icon.qml

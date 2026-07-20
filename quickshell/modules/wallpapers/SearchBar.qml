@@ -3,7 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 
-import "../.."
+import "."
 
 Item {
     id: root
@@ -41,12 +41,13 @@ Item {
         Behavior on border.width { NumberAnimation { duration: 130; easing.type: Easing.OutCubic } }
     }
 
-    Text {
+    Icon {
+        id: searchIcon
         anchors.centerIn: parent
         visible: !root.open
-        text: "⌕"
+        name: "search"
+        size: 24
         color: Colors.md3.on_surface_variant
-        font.pixelSize: 25
     }
 
     TextField {

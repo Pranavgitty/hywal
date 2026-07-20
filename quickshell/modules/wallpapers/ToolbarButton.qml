@@ -3,7 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls
 
-import "../.."
+import "."
 
 Item {
     id: root
@@ -43,11 +43,13 @@ Item {
         }
     }
 
-    Text {
+    Icon {
+        id: iconItem
         anchors.centerIn: parent
-        text: root.icon
+        name: root.icon
+        size: 24
         color: Colors.md3.on_secondary_container
-        font.pixelSize: 21
+        filled: root.checked
     }
 
     MouseArea {
