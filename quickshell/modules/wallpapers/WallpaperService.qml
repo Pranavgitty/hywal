@@ -10,20 +10,60 @@ Singleton {
     id: root
 
     readonly property string home: Quickshell.env("HOME")
-    readonly property string wallpaperDirectory: home + "/Pictures/Switcher"
+    readonly property string configDir: (function() {
+        var configHome = Quickshell.env("XDG_CONFIG_HOME") || (home + "/.config");
+        return configHome + "/hywal";
+    })()
+    property string wallpaperDirectory: loadConfig().wallpaperDirectory || (home + "/Pictures/Switcher")
+    property string stateDirectory: loadConfig().stateDirectory || (home + "/.local/state/hywal")
     readonly property alias wallpapers: wallpapersModel
 
     property string currentWallpaper: ""
+
+    // Watch for reload signal from daemon
+    FileView {
+        path: stateDirectory + "/reload"
+        watchChanges: true
+        onFileChanged: {
+            reload()
+        }
+        onLoaded: {}
+    }
 
     ListModel {
         id: wallpapersModel
     }
 
+    function loadConfig() {
+        var configPath = configDir + "/config.json";
+        var file = FileView { path: configPath; }
+        if (file.exists) {
+            try {
+                var text = file.text();
+                return JSON.parse(text);
+            } catch (e) {
+                console.log("Failed to parse config:", e);
+            }
+        }
+        return {};
+    }
+
+    function saveConfig(config) {
+        var configPath = configDir + "/config.json";
+        var file = FileView { path: configPath; }
+        try {
+            file.write(JSON.stringify(config, null, 2));
+        } catch (e) {
+            console.log("Failed to save config:", e);
+        }
+    }
+
     function reload() {
-        console.log("Reloading wallpapers...")
+        console.log("Reloading wallpapers from:", wallpaperDirectory);
 
         scanWallpapers.exec([
-            home + "/.local/share/hywal/wallpaper-scanner.sh"
+            home + "/.local/share/hywal/wallpaper-scanner.sh",
+            wallpaperDirectory
         ])
     }
 
@@ -51,6 +91,14 @@ Singleton {
             "--source-color-index",
             "0"
         ])
+    }
+
+    function setWallpaperDirectory(dir) {
+        wallpaperDirectory = dir;
+        var config = loadConfig();
+        config.wallpaperDirectory = dir;
+        saveConfig(config);
+        reload();
     }
 
     Process {

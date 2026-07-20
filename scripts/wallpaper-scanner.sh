@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-DIR="$HOME/Pictures/Switcher"
+DIR="${1:-$HOME/Pictures/Switcher}"
 CACHE_DIR="${XDG_CACHE_HOME:-"$HOME/.cache"}/hywal/wallpapers"
 THUMBNAIL_SIZE="860x540"
 

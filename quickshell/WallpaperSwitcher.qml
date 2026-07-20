@@ -11,7 +11,11 @@ import "modules/wallpapers" as Wallpapers
 PanelWindow {
     id: root
 
-    property string stateFile: "/tmp/hywal.state"
+    readonly property string stateFile: (function() {
+        var stateHome = Quickshell.env("XDG_STATE_HOME") || (Quickshell.env("HOME") + "/.local/state");
+        return stateHome + "/hywal/state";
+    })()
+
     property bool slideshowActive: false
     property bool gridMode: false
     property string selectedPath: ""

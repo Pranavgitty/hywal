@@ -13,6 +13,9 @@ Fast, daemon-powered wallpaper switcher for Hyprland built with Quickshell and R
 - 🎨 **Matugen compatible** - Generates color schemes from wallpapers
 - 🌌 **Caelestia integration** - Dynamic wallpapers from Caelestia
 - 📁 **Configurable wallpaper directory** - Set your own wallpaper folders
+- 🔍 **Search functionality** - Filter wallpapers by name
+- ⭐ **Favorites support** - (Coming soon)
+- 🎬 **Slideshow mode** - (Coming soon)
 
 ## Screenshots
 
@@ -41,6 +44,7 @@ The installer will:
 - Install Quickshell configuration
 - Set up Matugen integration
 - Optionally install Caelestia integration if detected
+- Create default config at `~/.config/hywal/config.json`
 
 **Requirements:**
 - Rust toolchain (for building)
@@ -76,9 +80,56 @@ Or bind it to a key in your Hyprland config (e.g., `Super + W`):
 bind = $mod W, exec hywalctl toggle
 ```
 
+### CLI Commands
+
+```bash
+# Show help
+hywalctl --help
+
+# Toggle wallpaper switcher visibility
+hywalctl toggle
+
+# Show the wallpaper switcher
+hywalctl show
+
+# Hide the wallpaper switcher
+hywalctl hide
+
+# Reload wallpaper list
+hywalctl reload
+
+# Show current status
+hywalctl status
+
+# Apply a specific wallpaper by path
+hywalctl apply /path/to/wallpaper.jpg
+```
+
 ## Configuration
 
-HyWal automatically creates a configuration file under `~/.config/quickshell/hywal/config.json`. Refer to `quickshell/config.json.example` for available options.
+HyWal creates a configuration file at `~/.config/hywal/config.json`. See `quickshell/config.json.example` for available options:
+
+```json
+{
+  "wallpaper_directory": "~/Pictures/Switcher",
+  "state_directory": "~/.local/state/hywal",
+  "animation_duration": 200,
+  "default_view": "coverflow",
+  "thumbnail_size": "860x540",
+  "thumbnail_quality": 82
+}
+```
+
+### Configuration Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `wallpaper_directory` | `~/Pictures/Switcher` | Directory to scan for wallpapers |
+| `state_directory` | `~/.local/state/hywal` | Directory for daemon state files |
+| `animation_duration` | `200` | UI animation duration in milliseconds |
+| `default_view` | `coverflow` | Default view mode (`coverflow` or `grid`) |
+| `thumbnail_size` | `860x540` | Thumbnail resolution for caching |
+| `thumbnail_quality` | `82` | JPEG/WebP quality for thumbnails (1-100) |
 
 ## Architecture
 
@@ -91,16 +142,33 @@ graph LR
 
 - **hywalctl**: Command-line client to control the daemon
 - **hywald**: Persistent Rust daemon that manages wallpaper state
-- **State file**: Shared state between daemon and UI
+- **State file**: Shared state between daemon and UI (`~/.local/state/hywal/state`)
 - **Quickshell**: Framework for the popup UI
+
+## Uninstallation
+
+```bash
+./uninstall.sh
+```
+
+This will remove:
+- Binaries from `~/.local/bin`
+- Scripts from `~/.local/share/hywal`
+- Config from `~/.config/quickshell/hywal` and `~/.config/hywal`
+- State from `~/.local/state/hywal`
+- Matugen integration entries
+- Temporary socket and state files
 
 ## Roadmap
 
-- [ ] Search functionality
+- [x] Search functionality
 - [ ] Favorite wallpapers
-- [ ] Enhanced keyboard navigation
-- [ ] Thumbnail caching for faster loading
-- [ ] Smooth animations and transitions
+- [x] Enhanced keyboard navigation
+- [ ] Thumbnail caching for faster loading (implemented in scanner)
+- [x] Smooth animations and transitions
+- [x] Configurable wallpaper directory
+- [ ] Multi-monitor wallpaper support
+- [ ] Wallpaper history/recent
 
 ## License
 
