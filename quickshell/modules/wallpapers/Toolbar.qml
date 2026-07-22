@@ -3,7 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 
-import "../.."
+import "."
 
 Rectangle {
     id: root
@@ -32,14 +32,14 @@ Rectangle {
         spacing: 6
 
         ToolbarButton {
-            icon: root.gridMode ? "◫" : "▦"
+            icon: root.gridMode ? "list" : "grid"
             tooltip: root.gridMode ? "Switch to cover flow" : "Switch to grid"
             checked: root.gridMode
             onClicked: root.gridToggled()
         }
 
         ToolbarButton {
-            icon: "▶"
+            icon: "slideshow"
             tooltip: "Slideshow"
             checked: root.slideshowActive
             onClicked: root.slideshowToggled()
@@ -49,6 +49,6 @@ Rectangle {
 
         SearchBar { id: search }
 
-        ToolbarButton { icon: "•••"; tooltip: "More options" }
+        ToolbarButton { icon: "more"; tooltip: "More options" }
     }
 }

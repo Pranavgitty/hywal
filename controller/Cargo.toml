@@ -12,3 +12,5 @@ name = "hywalctl"
 path = "src/client.rs"
 
 [dependencies]
+clap = { version = "4", features = ["derive"] }
+anyhow = "1.0"
