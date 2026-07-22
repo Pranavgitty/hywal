@@ -46,7 +46,7 @@ Item {
     Icon {
         id: iconItem
         anchors.centerIn: parent
-        name: root.icon
+        icon: root.icon
         size: 24
         color: Colors.md3.on_secondary_container
         filled: root.checked

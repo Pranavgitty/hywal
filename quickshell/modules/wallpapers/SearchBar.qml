@@ -45,7 +45,7 @@ Item {
         id: searchIcon
         anchors.centerIn: parent
         visible: !root.open
-        name: "search"
+        icon: "search"
         size: 24
         color: Colors.md3.on_surface_variant
     }
